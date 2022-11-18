@@ -26,54 +26,54 @@
                 <div class="row">
                   <div class="col-12">
                     <q-input
-                      v-model="collection_address_street"
+                      v-model="form.collectionAddressStreet"
                       label="Street Address"
                       dense
                     />
                   </div>
                   <div class="col-6">
                     <q-input
-                      v-model="collection_address_suburb"
+                      v-model="form.collectionAddressSuburb"
                       label="Suburb"
                       dense
                     />
                   </div>
                   <div class="col-6 q-pl-md">
                     <q-input
-                      v-model="collection_address_city"
+                      v-model="form.collectionAddressCity"
                       label="City"
                       dense
                     />
                   </div>
                   <div class="col-6">
                     <q-input
-                      v-model="collection_address_postcode"
+                      v-model="form.collectionAddressPostcode"
                       label="Postcode"
                       dense
                     />
                   </div>
                   <div class="col-6 q-pl-md">
                     <q-input
-                      v-model="collection_address_province"
+                      v-model="form.collectionAddressProvince"
                       label="Province"
                       dense
                     />
                   </div>
                   <div class="col-12">
                     <q-input
-                      v-model="collection_instructions"
+                      v-model="form.collectionInstructions"
                       label="Collection Instuctions"
                       dense
                     />
                   </div>
                   <div class="col-4">
-                    <q-input v-model="sender_name" label="Name" dense />
+                    <q-input v-model="form.senderName" label="Name" dense />
                   </div>
                   <div class="col-4 q-pl-md">
-                    <q-input v-model="sender_email" label="E-Mail" dense />
+                    <q-input v-model="form.senderEmail" label="E-Mail" dense />
                   </div>
                   <div class="col-4 q-pl-md">
-                    <q-input v-model="sender_mobile" label="Mobile" dense />
+                    <q-input v-model="form.senderMobile" label="Mobile" dense />
                   </div>
                 </div>
               </q-card-section>
@@ -91,54 +91,62 @@
                 <div class="row">
                   <div class="col-12">
                     <q-input
-                      v-model="delivery_address_street"
+                      v-model="form.deliveryAddressStreet"
                       label="Street Address"
                       dense
                     />
                   </div>
                   <div class="col-6">
                     <q-input
-                      v-model="delivery_address_suburb"
+                      v-model="form.deliveryAddressSuburb"
                       label="Suburb"
                       dense
                     />
                   </div>
                   <div class="col-6 q-pl-md">
                     <q-input
-                      v-model="delivery_address_city"
+                      v-model="form.deliveryAddressCity"
                       label="City"
                       dense
                     />
                   </div>
                   <div class="col-6">
                     <q-input
-                      v-model="delivery_address_postcode"
+                      v-model="form.deliveryAddressPostcode"
                       label="Postcode"
                       dense
                     />
                   </div>
                   <div class="col-6 q-pl-md">
                     <q-input
-                      v-model="delivery_address_province"
+                      v-model="form.deliveryAddressProvince"
                       label="Province"
                       dense
                     />
                   </div>
                   <div class="col-12">
                     <q-input
-                      v-model="delivery_instructions"
+                      v-model="form.deliveryInstructions"
                       label="Delivery Instuctions"
                       dense
                     />
                   </div>
                   <div class="col-4">
-                    <q-input v-model="receiver_name" label="Name" dense />
+                    <q-input v-model="form.receiverName" label="Name" dense />
                   </div>
                   <div class="col-4 q-pl-md">
-                    <q-input v-model="receiver_email" label="E-Mail" dense />
+                    <q-input
+                      v-model="form.receiverEmail"
+                      label="E-Mail"
+                      dense
+                    />
                   </div>
                   <div class="col-4 q-pl-md">
-                    <q-input v-model="receiver_mobile" label="Mobile" dense />
+                    <q-input
+                      v-model="form.receiverMobile"
+                      label="Mobile"
+                      dense
+                    />
                   </div>
                 </div>
               </q-card-section>
@@ -155,16 +163,16 @@
               <q-card-section>
                 <div class="row">
                   <div class="col-3">
-                    <q-input v-model="parcel_length" label="Length" dense />
+                    <q-input v-model="form.parcelLength" label="Length" dense />
                   </div>
                   <div class="col-3 q-pl-md">
-                    <q-input v-model="parcel_width" label="Width" dense />
+                    <q-input v-model="form.parcelWidth" label="Width" dense />
                   </div>
                   <div class="col-3 q-pl-md">
-                    <q-input v-model="parcel_height" label="Height" dense />
+                    <q-input v-model="form.parcelHeight" label="Height" dense />
                   </div>
                   <div class="col-3 q-pl-md">
-                    <q-input v-model="parcel_weigth" label="Weigth" dense />
+                    <q-input v-model="form.parcelWeight" label="Weigth" dense />
                   </div>
                 </div>
               </q-card-section>
@@ -181,20 +189,41 @@
               <q-card-section>
                 <div class="row">
                   <div class="col-12">
-                    <q-card-actions align="center">
-                      <div class="row">
-                        <div class="col-12 q-pa-md">
-                          <q-btn
-                            class="q-ma-sm q-pa-sm"
-                            color="primary"
-                            dense
-                            label="Get Shipment Quotes"
-                            @click="onOKClick"
-                            icon="cloud_download"
-                          />
-                        </div>
+                    <div class="row">
+                      <div
+                        v-if="shipmentQuotes.length === 0"
+                        class="col-12 q-pa-md"
+                        style="margin-left: 40%; margin-right: auto"
+                      >
+                        <q-btn
+                          class="q-pa-sm"
+                          color="primary"
+                          dense
+                          label="Get Shipment Quotes"
+                          @click="onQuoteClick"
+                          icon="cloud_download"
+                          :loading="busy"
+                        />
                       </div>
-                    </q-card-actions>
+                      <div
+                        class="col-4"
+                        v-else
+                        v-for="shipmentQuote in shipmentQuotes"
+                        :key="shipmentQuote.serviceType"
+                      >
+                        <q-card flat bordered class="q-ma-sm">
+                          <q-toolbar
+                            class="bg-grey-1 text-black shadow-2 rounded-borders"
+                          >
+                            <b>{{ shipmentQuote.serviceName }}</b>
+                          </q-toolbar>
+                          <q-card-section class="row justify-between">
+                            <span>{{ shipmentQuote.serviceDescription }}</span>
+                            <span>R {{ shipmentQuote.rate }}</span>
+                          </q-card-section>
+                        </q-card>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </q-card-section>
@@ -223,40 +252,66 @@
 </template>
 
 <script>
+import Form from "vform";
+
 export default {
-  props: {
-    // ...your custom props
-  },
+  props: {},
   data() {
     return {
-      lorem:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      form: new Form({
+        collectionAddressStreet: "",
+        collectionAddressSuburb: "",
+        collectionAddressCity: "",
+        collectionAddressPostcode: "",
+        collectionAddressProvince: "",
+        collectionInstructions: "",
+        senderName: "",
+        senderEmail: "",
+        senderMobile: "",
+        deliveryAddressStreet: "",
+        deliveryAddressSuburb: "",
+        deliveryAddressCity: "",
+        deliveryAddressPostcode: "",
+        deliveryAddressProvince: "",
+        deliveryInstructions: "",
+        receiverName: "",
+        receiverEmail: "",
+        receiverMobile: "",
+        parcelLength: "",
+        parcelWidth: "",
+        parcelHeight: "",
+        parcelWeight: "",
+      }),
+      shipmentQuotes: [],
+      busy: false,
     };
   },
 
   methods: {
-    // following method is REQUIRED
-    // (don't change its name --> "show")
     show() {
       this.$refs.dialog.show();
     },
 
-    // following method is REQUIRED
-    // (don't change its name --> "hide")
     hide() {
       this.$refs.dialog.hide();
     },
 
     onDialogHide() {
-      // required to be emitted
-      // when QDialog emits "hide" event
       this.$emit("hide");
     },
 
+    async onQuoteClick() {
+      // TODO: Add error handling
+      this.busy = true;
+      const response = await this.$api.post(
+        "/api/shipment_quote",
+        this.form.data()
+      );
+      this.shipmentQuotes = response.data;
+      this.busy = false;
+    },
+
     onOKClick() {
-      // on OK, it is REQUIRED to
-      // emit "ok" event (with optional payload)
-      // before hiding the QDialog
       this.$emit("ok");
       // or with payload: this.$emit('ok', { ... })
 
@@ -265,7 +320,6 @@ export default {
     },
 
     onCancelClick() {
-      // we just need to hide dialog
       this.hide();
     },
   },
